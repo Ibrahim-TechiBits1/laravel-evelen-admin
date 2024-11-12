@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -15,10 +16,6 @@ class Dashboard
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return redirect()->route('index')
-                ->with('error', 'You must be logged in to access the dashboard.');
-        }
 
         return $next($request);
     }

@@ -10,7 +10,7 @@ Route::get('/', [UserController::class, 'index'])->name('index');
 Route::group(['middleware' => LoggedIn::class], function () {
     Route::get('/signup', [UserController::class, 'signup'])->name('signup');
     Route::post('/user-create', [UserController::class, 'userCreate'])->name('user-create');
-    Route::post('/login/{id?}', [UserController::class, 'login'])->name('login');
+    Route::post('/login', [UserController::class, 'login'])->name('login');
     Route::get('/forgot-password', [UserController::class, 'forgotPassword'])->name('forgot-password');
     Route::post('/check-information', [UserController::class, 'checkInformation'])->name('check-information');
     Route::post('/forgot-password-verify', [UserController::class, 'forgotPasswordVerify'])->name('forgot-password-verify');
@@ -19,4 +19,5 @@ Route::group(['middleware' => LoggedIn::class], function () {
 
 Route::group(['middleware' => Dashboard::class], function () {
     Route::post('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::post('/trash-kill', [UserController::class, 'trashKill'])->name('trash-kill');
 });

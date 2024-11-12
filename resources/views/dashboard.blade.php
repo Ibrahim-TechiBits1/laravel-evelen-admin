@@ -21,23 +21,20 @@
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
 
     <body id="page-top">
-
         <!-- Page Wrapper -->
         <div id="wrapper">
-
-
-          
-
             <!-- Sidebar -->
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" >
+                <a class="sidebar-brand d-flex align-items-center justify-content-center">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -55,10 +52,17 @@
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ route('logout') }}">
-                      <i class="fas fa-fw fa-tachometer-alt"></i>
-                      <span>Logout</span></a>
-              </li>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#killModal">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Delete Account</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Logout</span></a>
+                </li>
+
 
             </ul>
             <!-- Content Wrapper -->
@@ -81,7 +85,7 @@
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
+                                                <th>User ID</th>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Username</th>
@@ -96,49 +100,33 @@
                                         <tbody>
                                             <tr>
                                                 <td>{{ $user->id }}</td>
-
                                                 <td>{{ $user->first_name }}</td>
                                                 <td>{{ $user->last_name }}</td>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->phone }}</td>
                                                 <td>{{ $user->password }}</td>
-                                                <td>{{ $user->created_at }}</td>
-                                                <td>{{ $user->updated_at }}</td>
-
+                                                <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td>
+                                                <td>{{ $user->updated_at->format('Y-m-d H:i:s') }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <!-- /.container-fluid -->
 
                 </div>
-                <!-- End of Main Content -->
-
-                <!-- Footer -->
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2020</span>
+                            <span>Copyright &copy; SALEEM 2024</span>
                         </div>
                     </div>
                 </footer>
-                <!-- End of Footer -->
-
             </div>
-            <!-- End of Content Wrapper -->
-
         </div>
-        <!-- End of Page Wrapper -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
 
         <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -151,10 +139,37 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body">Chala jaa, nikaal jaa idr se piyare. <br>Go away, get out of here, dear.
+                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="killModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Permanent Account Deletion Warning</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Are you sure you want to permanently delete your account? This action
+                        cannot be undone, and all your data will be lost. If you're certain, please confirm."
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
+                        <form action="{{ route('trash-kill') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                        </form>
                     </div>
                 </div>
             </div>

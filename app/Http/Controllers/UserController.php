@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    private $indexView = 'welcome';
+    private $indexView = 'index';
     private $signupView = 'signup';
-    private $loginView = 'welcome';
     private $editView = 'edit';
     private $dashboardView = 'dashboard';
 
@@ -128,6 +127,7 @@ class UserController extends Controller
 
         if ($user) {
             $user->password = $request->password;
+            $user->updated_at = now();
             $user->save();
 
             return redirect()->route('index')->with('success', 'Password updated successfully!');
@@ -166,6 +166,25 @@ class UserController extends Controller
     
         return response()->json(['exists' => false]);
     }
+    
+    public function trashKill(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+    
+        $user = Users::find($request->user_id);
+    
+        if ($user) {
+            $user->delete();
+    
+            return redirect()->route('index')->with('success', 'User deleted permanently.');
+        } else {
+            return redirect()->back()->withErrors(['message' => 'User not found.']);
+        }
+    }
+    
+
     
     
 }
