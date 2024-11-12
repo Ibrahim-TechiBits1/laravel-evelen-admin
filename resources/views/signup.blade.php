@@ -86,9 +86,6 @@
 
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="{{ route('forgot-password') }}">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
                                 <a class="small" href="{{ route('index') }}">Already have an account? Login!</a>
                             </div>
                         </div>
