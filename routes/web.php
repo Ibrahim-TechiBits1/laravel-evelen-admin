@@ -17,6 +17,7 @@ Route::group(['middleware' => LoggedIn::class], function () {
     Route::post('/forgot-password-verify', [UserController::class, 'forgotPasswordVerify'])->name('forgot-password-verify');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::post('/trash-kill', [UserController::class, 'trashKill'])->name('trash-kill');
+    Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
 });
 
 

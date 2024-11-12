@@ -16,7 +16,7 @@ class UserController extends Controller
     private $signupView = 'signup';
     private $editView = 'edit';
     private $dashboardView = 'dashboard';
-
+    private $accountEditView = 'account-edit';
 
     public function index()
     {
@@ -189,6 +189,56 @@ class UserController extends Controller
     {
         $user = Auth::user();
         return view($this->dashboardView, ['user' => $user]);
+    }
+    
+
+
+
+    public function update(Request $request, $id)
+    {
+        $rules = [
+            'first_name'   => 'required',
+            'last_name'    => 'required',
+            'username'     => 'required',
+            'phone' => 'required|unique:users,phone,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password'     => 'required',
+        ];
+        
+        $messages = [
+            'first_name.required'     => 'First Name is required',
+            'last_name.required'      => 'Last Name is required',
+            'username.required'       => 'UserName is required',
+            'phone.required' => 'Phone No is required',
+            'phone.unique' => 'This phone number is already taken',
+            'email.required'          => 'Email is required',
+            'email.required' => 'Email is required',
+        'email.unique' => 'This email address is already taken',
+        'email.email' => 'Please provide a valid email address',
+            'password.required'       => 'Password is required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = Users::findOrFail($id);
+    
+        $user->first_name = $request->input('first_name');
+        $user->last_name  = $request->input('last_name');
+        $user->username   = $request->input('username');
+        $user->phone      = $request->input('phone');
+        $user->email      = $request->input('email');
+    
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+    
+        $user->save();
+    
+        return redirect()->route('dashboard')->with('success', 'User updated successfully!');
     }
     
     
