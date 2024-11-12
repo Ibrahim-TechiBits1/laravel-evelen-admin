@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Laravel</title>
+    <link rel="icon" href="{{ asset('assets/img/laravel-logo.png') }}" type="image/svg+xml">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -227,7 +228,7 @@
                     </button>
                 </div>
                 <div class="modal-body">Are you sure you want to permanently delete your account? This action
-                    cannot be undone, and all your data will be lost. If you're certain, please confirm."
+                    cannot be undone, and all your data will be lost.
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
