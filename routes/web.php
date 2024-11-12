@@ -8,6 +8,7 @@ use App\Http\Middleware\Dashboard;
 Route::get('/', [UserController::class, 'index'])->name('index');
 
 Route::group(['middleware' => LoggedIn::class], function () {
+    
     Route::get('/signup', [UserController::class, 'signup'])->name('signup');
     Route::post('/user-create', [UserController::class, 'userCreate'])->name('user-create');
     Route::post('/login', [UserController::class, 'login'])->name('login');
@@ -15,9 +16,10 @@ Route::group(['middleware' => LoggedIn::class], function () {
     Route::post('/check-information', [UserController::class, 'checkInformation'])->name('check-information');
     Route::post('/forgot-password-verify', [UserController::class, 'forgotPasswordVerify'])->name('forgot-password-verify');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::post('/trash-kill', [UserController::class, 'trashKill'])->name('trash-kill');
 });
 
+
 Route::group(['middleware' => Dashboard::class], function () {
-    Route::post('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::post('/trash-kill', [UserController::class, 'trashKill'])->name('trash-kill');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 });

@@ -98,6 +98,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             <tr>
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->first_name }}</td>
@@ -105,7 +106,7 @@
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->phone }}</td>
-                                                <td>{{ $user->password }}</td>
+                                                <td>{{ substr($user->password, 0, 10) }}</td>
                                                 <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td>
                                                 <td>{{ $user->updated_at->format('Y-m-d H:i:s') }}</td>
                                             </tr>

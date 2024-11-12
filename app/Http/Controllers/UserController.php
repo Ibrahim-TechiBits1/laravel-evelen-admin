@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
@@ -56,6 +58,9 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+
+        $hashedPassword = Hash::make($request->password);
         
         Users::create([
             'first_name'  => $request->first_name,
@@ -63,7 +68,7 @@ class UserController extends Controller
             'username'    => $request->username,
             'phone'       => $request->phone,
             'email'       => $request->email,
-            'password'    => $request->password,
+            'password'    => $hashedPassword,
         ]);
 
 
@@ -74,21 +79,16 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        if ($request->email && $request->password) {
-     
-            $user = Users::where('email', $request->email)
-                         ->where('password', $request->password)
-                         ->first();
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
     
-     
-            if ($user) {
-    
-                return view($this->dashboardView, ['user' => $user]);
-            }
-    
-            return redirect()->back()->withErrors(['login' => 'Invalid credentials']);
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return redirect()->route('dashboard');
         }
     
+        return redirect()->back()->withErrors(['login' => 'Invalid credentials']);
     }
     
 
@@ -101,7 +101,6 @@ class UserController extends Controller
 
     public function forgotPasswordVerify(Request $request)
     {
-
 
         $rules = [
             'phone'    => 'required',
@@ -185,6 +184,12 @@ class UserController extends Controller
     }
     
 
+
+    public function dashboard(Request $request)
+    {
+        $user = Auth::user();
+        return view($this->dashboardView, ['user' => $user]);
+    }
     
     
 }
